@@ -10,7 +10,6 @@ select
     orders.status as order_status,
     payments.status as payment_status
 from {{ source('jaffle_shop', 'orders') }} as orders
-
 join (
       select 
         first_name || ' ' || last_name as name, 
@@ -18,9 +17,7 @@ join (
       from {{ source('jaffle_shop', 'customers') }}
 ) customers
 on orders.user_id = customers.id
-
 join (
-
     select 
         b.id as customer_id,
         b.name as full_name,
@@ -60,7 +57,7 @@ join (
 ) customer_order_history
 on orders.user_id = customer_order_history.customer_id
 
-left outer join {{ source('stripe', 'payment') }} payments
+left outer join {{ source('stripe', 'payment') }} as payments
 on orders.id = payments.orderid
 
 where payments.status != 'fail'
