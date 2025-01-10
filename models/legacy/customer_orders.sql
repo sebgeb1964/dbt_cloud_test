@@ -10,6 +10,7 @@ select
     orders.status as order_status,
     payments.status as payment_status
 from {{ source('jaffle_shop', 'orders') }} as orders
+
 join (
       select 
         first_name || ' ' || last_name as name, 
@@ -17,6 +18,7 @@ join (
       from {{ source('jaffle_shop', 'customers') }}
 ) customers
 on orders.user_id = customers.id
+
 join (
     select 
         b.id as customer_id,
